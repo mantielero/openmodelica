@@ -1,0 +1,10 @@
+{
+   "name": "omniorbpy",
+   "sources": [
+      {
+         "type": "archive",
+         "url": "https://sourceforge.net/projects/omniorb/files/omniORBpy/omniORBpy-4.2.2/omniORBpy-4.2.2.tar.bz2",
+         "sha256": "f3686e5f85b7c7fec83a1ec97dc6874d336e24830c0e68f1e1ecbd798fa1696a"
+      }
+   ]
+}

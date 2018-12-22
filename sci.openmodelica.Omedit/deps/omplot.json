@@ -1,0 +1,42 @@
+{
+   "name": "openmodelica-omplot",
+   "buildsystem": "simple",
+   "build-options": {
+      "env": {
+         "PATH": "/usr/lib/sdk/gfortran-62/bin:/usr/lib/sdk/openjdk9/bin:/app/bin:/usr/bin",
+         "LD_LIBRARY_PATH": "/usr/lib/sdk/gfortran-62/lib:/app/lib",
+         "LIBRARY_PATH": "/usr/lib/sdk/gfortran-62/lib:/app/lib",
+         "JAVA_HOME": "/usr/lib/sdk/openjdk9/bin",
+         "BOOST_ROOT" : "/app",
+         "BOOST_LIBRARYDIR" : "/app/lib",
+         "BOOST_INCLUDE_DIR" : "/app/include/boost",
+         "CC" : "/usr/bin/clang",
+         "CXX" : "/usr/bin/clang++",
+         "CPPFLAGS" : "-DH5_USE_18_API"
+      }
+   },
+   "build-commands": [
+      /* Building qwt */
+      "cd qwt && pwd",
+      "cd qwt && ls --color",
+      "autoconf",
+      "./configure --prefix=/app --with-omniORB",
+      "make qwt-build",
+      "cd qwt/build && cp -r include /app",
+      "cd qwt/build && cp -r include /app",
+      "cd qwt/build && cp -r features /app",
+      "cd qwt/build && cp -r lib /app",
+      /* Building omplot */
+      "make",
+      "make install",
+      "mkdir -p /app/include/omplot",
+      "cp -a OMPlot/OMPlotGUI/*.h /app/include/omplot"
+   ],
+   "sources": [
+      {
+      "type": "git",
+      "url": "https://github.com/OpenModelica/OMPlot.git"
+      /* "tag": "v1.9.2" */
+      }
+   ]
+}

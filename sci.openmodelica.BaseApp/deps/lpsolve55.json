@@ -1,0 +1,29 @@
+{
+   "name": "lpsolve55",
+   "buildsystem": "simple",
+   "build-commands": [
+      "pwd",
+      "ls --color",
+      "cd /run/build/lpsolve55/lpsolve55 && sh -x ccc",
+      "cd /run/build/lpsolve55/lp_solve && sh -x ccc",
+      "install -m 755 /run/build/lpsolve55/lpsolve55/bin/ux*/liblpsolve55.so /app/lib",
+      "install -m 755 /run/build/lpsolve55/lp_solve/bin/ux*/* /app/bin",
+      "install -d /app/include/lpsolve",
+      "install -m 644 /run/build/lpsolve55/lp*.h /app/include/lpsolve/"
+   ],
+   "sources": [
+      {
+         "type": "archive",
+         "url": "https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.5/lp_solve_5.5.2.5_source.tar.gz",
+         "sha256": "201a7c62b8b3360c884ee2a73ed7667e5716fc1e809755053b398c2f5b0cf28a"
+      },
+      {
+          "type": "patch",
+          "path": "cflags.patch"
+      },
+      {
+          "type": "patch",
+          "path": "lpsolve-5.5.2.0.defines.patch"
+      }
+   ]
+}

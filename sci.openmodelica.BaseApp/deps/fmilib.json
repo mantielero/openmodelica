@@ -1,0 +1,19 @@
+{
+   "name": "fmilib",
+   "buildsystem": "simple",
+   "build-commands" : [
+      "mkdir fmilib/build_dir",
+      "sed -i '/CMAKE_INSTALL_PREFIX/d' fmilib/CMakeLists.txt",
+      "cd fmilib/build_dir && cmake -DCMAKE_INSTALL_PREFIX=/app ..",
+      "cd fmilib/build_dir && make",
+      "cd fmilib/build_dir && make install"
+   ],
+
+   "sources": [
+      {
+      "type": "svn",
+      "url": "https://svn.jmodelica.org/FMILibrary/tags/2.0.3/",
+      "dest" : "fmilib"
+      }
+   ]
+}

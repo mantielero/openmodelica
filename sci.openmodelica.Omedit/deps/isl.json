@@ -1,0 +1,11 @@
+{
+   "name" : "isl",
+   "no-autogen" : true,
+   "sources" : [
+      {
+         "type" : "archive",
+         "url" : "http://isl.gforge.inria.fr/isl-0.19.tar.bz2",
+         "sha256": "d59726f34f7852a081fbd3defd1ab2136f174110fc2e0c8d10bb122173fa9ed8"
+      }
+   ]
+}

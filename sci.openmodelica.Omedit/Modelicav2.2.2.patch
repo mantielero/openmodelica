@@ -1,0 +1,12 @@
+diff -u -x .svn -r libraries/Modelica 2.2.2/Constants.mo build/lib/omlibrary/Modelica 2.2.2/Constants.mo
+--- Modelica/Constants.mo	2013-03-27 20:58:50.045977600 +0100
++++ Modelica/Constants.mo	2013-04-07 10:47:00.460643492 +0200
+@@ -21,7 +21,7 @@
+     "Smallest number such that small and -small are representable on the machine";
+   constant Real inf=1.e+60
+     "Biggest Real number such that inf and -inf are representable on the machine";
+-  constant Integer Integer_inf=2147483647
++  constant Integer Integer_inf=OpenModelica.Internal.Architecture.integerMax()
+     "Biggest Integer number such that Integer_inf and -Integer_inf are representable on the machine";
+
+   // Constants of nature

@@ -1,0 +1,866 @@
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Constants.mo build/Modelica 3.1/Constants.mo
+--- svn/MSL 3.1/Modelica/Constants.mo	2013-10-03 15:46:06.065017359 +0200
++++ build/Modelica 3.1/Constants.mo	2013-10-03 15:49:03.009763359 +0200
+@@ -21,7 +21,7 @@
+     "Smallest number such that small and -small are representable on the machine";
+   final constant Real inf=1.e+60
+     "Biggest Real number such that inf and -inf are representable on the machine";
+-  final constant Integer Integer_inf=2147483647
++  final constant Integer Integer_inf=OpenModelica.Internal.Architecture.integerMax()
+     "Biggest Integer number such that Integer_inf and -Integer_inf are representable on the machine";
+ 
+   // Constants of nature
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Electrical/Digital.mo build/Modelica 3.1/Electrical/Digital.mo
+--- svn/MSL 3.1/Modelica/Electrical/Digital.mo	2013-10-03 15:46:09.905033545 +0200
++++ build/Modelica 3.1/Electrical/Digital.mo	2013-10-03 15:49:03.005763342 +0200
+@@ -2077,7 +2077,7 @@
+       D.Interfaces.Logic x_delayed;
+ 
+     equation
+-      x_delayed = integer(delay(x, delayTime));
++      Integer(x_delayed) = integer(delay(Integer(x), delayTime));
+       y = if delayTime > 0 then
+               (if time >= delayTime then x_delayed else y0) else
+                 pre(x);
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Fluid/Pipes.mo build/Modelica 3.1/Fluid/Pipes.mo
+--- svn/MSL 3.1/Modelica/Fluid/Pipes.mo	2013-10-03 15:46:07.849024879 +0200
++++ build/Modelica 3.1/Fluid/Pipes.mo	2013-10-03 15:49:03.061763578 +0200
+@@ -1690,7 +1685,7 @@
+        Xis[i]=(1.8*Modelica.Math.log10(max(1e-10,Res[i]))-1.5)^(-2);
+        Nus_lam[i]=(Nu_1^3+0.7^3+(Nus_2[i]-0.7)^3)^(1/3);
+        Nus_2[i]=smooth(0,1.077*(abs(Res[i])*Prs[i]*diameters[i]/lengths[i]/(if vs[i]>=0 then (i-0.5) else (n-i+0.5)))^(1/3));
+-       Nus[i]=spliceFunction(Nus_turb[i], Nus_lam[i], Res[i]-6150, 3850);
++       Nus[i]=Modelica.Media.Air.MoistAir.Utilities.spliceFunction(Nus_turb[i], Nus_lam[i], Res[i]-6150, 3850);
+       end for;
+       annotation (Documentation(info="<html>
+ Heat transfer model for laminar and turbulent flow in pipes. Range of validity:
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Media/IdealGases/Common/FluidData.mo build/Modelica 3.1/Media/IdealGases/Common/FluidData.mo
+--- svn/MSL 3.1/Modelica/Media/IdealGases/Common/FluidData.mo	2013-10-03 15:46:05.881016583 +0200
++++ build/Modelica 3.1/Media/IdealGases/Common/FluidData.mo	2013-10-03 15:49:03.065763596 +0200
+@@ -1,11 +1,12 @@
+ within Modelica.Media.IdealGases.Common;
+ package FluidData "Critical data, dipole moments and related data"
++
+   extends Modelica.Icons.Library;
+ 
+-  import Modelica.Media.Interfaces.PartialMedium;
++  import Modelica.Media.Interfaces.PartialMixtureMedium;
+   import Modelica.Media.IdealGases.Common.SingleGasesData;
+ 
+-  constant SingleGasNasa.FluidConstants N2(
++  constant PartialMixtureMedium.FluidConstants N2(
+                        chemicalFormula =        "N2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -23,7 +24,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants O2(
++  constant PartialMixtureMedium.FluidConstants O2(
+                        chemicalFormula =        "O2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -41,7 +42,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants CL2(
++  constant PartialMixtureMedium.FluidConstants CL2(
+                        chemicalFormula =        "CL2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -59,7 +60,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants F2(
++  constant PartialMixtureMedium.FluidConstants F2(
+                        chemicalFormula =        "F2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -77,7 +78,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants CO2(
++  constant PartialMixtureMedium.FluidConstants CO2(
+                        chemicalFormula =        "CO2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -95,7 +96,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true); // does not exist!
+ 
+-  constant SingleGasNasa.FluidConstants CO(
++  constant PartialMixtureMedium.FluidConstants CO(
+                        chemicalFormula =        "CO",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -113,7 +114,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants H2(
++  constant PartialMixtureMedium.FluidConstants H2(
+                        chemicalFormula =        "H2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -131,7 +132,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants H2O(
++  constant PartialMixtureMedium.FluidConstants H2O(
+                        chemicalFormula =        "H2O",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -149,7 +150,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants N2O(
++  constant PartialMixtureMedium.FluidConstants N2O(
+                        chemicalFormula =        "N2O",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -167,7 +168,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants NO(
++  constant PartialMixtureMedium.FluidConstants NO(
+                        chemicalFormula =        "NO",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -185,7 +186,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants NO2(
++  constant PartialMixtureMedium.FluidConstants NO2(
+                        chemicalFormula =        "NO2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -203,7 +204,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants NH3(
++  constant PartialMixtureMedium.FluidConstants NH3(
+                        chemicalFormula =        "NH3",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -221,7 +222,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants SO2(
++  constant PartialMixtureMedium.FluidConstants SO2(
+                        chemicalFormula =        "SO2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -239,7 +240,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants SO3(
++  constant PartialMixtureMedium.FluidConstants SO3(
+                        chemicalFormula =        "SO3",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -257,7 +258,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants Ar(
++  constant PartialMixtureMedium.FluidConstants Ar(
+                        chemicalFormula =        "Ar",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -275,7 +276,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants He(
++  constant PartialMixtureMedium.FluidConstants He(
+                        chemicalFormula =        "He",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -293,7 +294,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+- constant SingleGasNasa.FluidConstants Ne(
++ constant PartialMixtureMedium.FluidConstants Ne(
+                        chemicalFormula =        "Ne",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -311,7 +312,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants CH4(
++  constant PartialMixtureMedium.FluidConstants CH4(
+                        chemicalFormula =        "CH4",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -329,7 +330,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C2H6(
++  constant PartialMixtureMedium.FluidConstants C2H6(
+                        chemicalFormula =        "C2H6",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -347,7 +348,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C3H8(
++  constant PartialMixtureMedium.FluidConstants C3H8(
+                        chemicalFormula =        "C3H8",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -365,7 +366,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C4H10_n_butane(
++  constant PartialMixtureMedium.FluidConstants C4H10_n_butane(
+                        chemicalFormula =        "C4H10",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -383,7 +384,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C5H12_n_pentane(
++  constant PartialMixtureMedium.FluidConstants C5H12_n_pentane(
+                        chemicalFormula =        "C5H12",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -401,7 +402,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C6H14_n_hexane(
++  constant PartialMixtureMedium.FluidConstants C6H14_n_hexane(
+                        chemicalFormula =        "C6H14",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -419,7 +420,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C7H16_n_heptane(
++  constant PartialMixtureMedium.FluidConstants C7H16_n_heptane(
+                        chemicalFormula =        "C7H16",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -437,7 +438,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C2H4(
++  constant PartialMixtureMedium.FluidConstants C2H4(
+                        chemicalFormula =        "C2H4",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -455,7 +456,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C3H6_propylene(
++  constant PartialMixtureMedium.FluidConstants C3H6_propylene(
+                        chemicalFormula =        "C3H6",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -473,7 +474,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C4H8_1_butene(
++  constant PartialMixtureMedium.FluidConstants C4H8_1_butene(
+                        chemicalFormula =        "C4H8",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -491,7 +492,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C5H10_1_pentene(
++  constant PartialMixtureMedium.FluidConstants C5H10_1_pentene(
+                        chemicalFormula =        "C5H10",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -509,7 +510,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C6H12_1_hexene(
++  constant PartialMixtureMedium.FluidConstants C6H12_1_hexene(
+                        chemicalFormula =        "C6H12",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -527,7 +528,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C7H14_1_heptene(
++  constant PartialMixtureMedium.FluidConstants C7H14_1_heptene(
+                        chemicalFormula =        "C7H14",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -545,7 +546,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C2H2_vinylidene(
++  constant PartialMixtureMedium.FluidConstants C2H2_vinylidene(
+                        chemicalFormula =        "C2H2",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -563,7 +564,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C6H6(
++  constant PartialMixtureMedium.FluidConstants C6H6(
+                        chemicalFormula =        "C6H6",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -581,7 +582,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C8H18_n_octane(
++  constant PartialMixtureMedium.FluidConstants C8H18_n_octane(
+                        chemicalFormula =        "C8H18",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -599,7 +600,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C8H10_ethylbenz(
++  constant PartialMixtureMedium.FluidConstants C8H10_ethylbenz(
+                        chemicalFormula =        "C8H10",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -617,7 +618,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants CH3OH(
++  constant PartialMixtureMedium.FluidConstants CH3OH(
+                        chemicalFormula =        "CH3OH",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -635,7 +636,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C2H5OH(
++  constant PartialMixtureMedium.FluidConstants C2H5OH(
+                        chemicalFormula =        "C2H5OH",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -653,7 +654,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C3H7OH(
++  constant PartialMixtureMedium.FluidConstants C3H7OH(
+                        chemicalFormula =        "C3H7OH",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+@@ -671,7 +672,7 @@
+                        hasCriticalData =       true,
+                        hasAcentricFactor =     true);
+ 
+-  constant SingleGasNasa.FluidConstants C4H9OH(
++  constant PartialMixtureMedium.FluidConstants C4H9OH(
+                        chemicalFormula =        "C4H9OH",
+                        iupacName =              "unknown",
+                        structureFormula =       "unknown",
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Media/IdealGases/Common/package.mo build/Modelica 3.1/Media/IdealGases/Common/package.mo
+--- svn/MSL 3.1/Modelica/Media/IdealGases/Common/package.mo	2013-10-03 15:46:05.877016567 +0200
++++ build/Modelica 3.1/Media/IdealGases/Common/package.mo	2013-10-03 15:49:03.065763596 +0200
+@@ -49,6 +49,8 @@
+ 
+   extends Interfaces.PartialPureSubstance(
+      ThermoStates = Choices.IndependentVariables.pT,
++     redeclare final record FluidConstants =
++        Modelica.Media.Interfaces.PartialMixtureMedium.FluidConstants,
+      mediumName=data.name,
+      substanceNames={data.name},
+      singleState=false,
+@@ -64,43 +66,6 @@
+     Temperature T "Temperature of medium";
+   end ThermodynamicState;
+ 
+-  redeclare record extends FluidConstants "Extended fluid constants"
+-    Temperature criticalTemperature "critical temperature";
+-    AbsolutePressure criticalPressure "critical pressure";
+-    MolarVolume criticalMolarVolume "critical molar Volume";
+-    Real acentricFactor "Pitzer acentric factor";
+-    Temperature triplePointTemperature "triple point temperature";
+-    AbsolutePressure triplePointPressure "triple point pressure";
+-    Temperature meltingPoint "melting point at 101325 Pa";
+-    Temperature normalBoilingPoint "normal boiling point (at 101325 Pa)";
+-    DipoleMoment dipoleMoment
+-      "dipole moment of molecule in Debye (1 debye = 3.33564e10-30 C.m)";
+-    Boolean hasIdealGasHeatCapacity=false
+-      "true if ideal gas heat capacity is available";
+-    Boolean hasCriticalData=false "true if critical data are known";
+-    Boolean hasDipoleMoment=false "true if a dipole moment known";
+-    Boolean hasFundamentalEquation=false "true if a fundamental equation";
+-    Boolean hasLiquidHeatCapacity=false
+-      "true if liquid heat capacity is available";
+-    Boolean hasSolidHeatCapacity=false
+-      "true if solid heat capacity is available";
+-    Boolean hasAccurateViscosityData=false
+-      "true if accurate data for a viscosity function is available";
+-    Boolean hasAccurateConductivityData=false
+-      "true if accurate data for thermal conductivity is available";
+-    Boolean hasVapourPressureCurve=false
+-      "true if vapour pressure data, e.g. Antoine coefficents are known";
+-    Boolean hasAcentricFactor=false "true if Pitzer accentric factor is known";
+-    SpecificEnthalpy HCRIT0=0.0
+-      "Critical specific enthalpy of the fundamental equation";
+-    SpecificEntropy SCRIT0=0.0
+-      "Critical specific entropy of the fundamental equation";
+-    SpecificEnthalpy deltah=0.0
+-      "Difference between specific enthalpy model (h_m) and f.eq. (h_f) (h_m - h_f)";
+-    SpecificEntropy deltas=0.0
+-      "Difference between specific enthalpy model (s_m) and f.eq. (s_f) (s_m - s_f)";
+-  end FluidConstants;
+-
+   import SI = Modelica.SIunits;
+   import Modelica.Math;
+   import Modelica.Media.Interfaces.PartialMedium.Choices.ReferenceEnthalpy;
+@@ -560,6 +525,7 @@
+   function thermalConductivityEstimate
+     "Thermal conductivity of polyatomic gases(Eucken and Modified Eucken correlation)"
+     extends Modelica.Icons.Function;
++    input IdealGases.Common.DataRecord data "Ideal gas data";
+     input SpecificHeatCapacity Cp "Constant pressure heat capacity";
+     input DynamicViscosity eta "Dynamic viscosity";
+     input Integer method(min=1,max=2)=1
+@@ -589,7 +555,7 @@
+   algorithm
+     assert(fluidConstants[1].hasCriticalData,
+     "Failed to compute thermalConductivity: For the species \"" + mediumName + "\" no critical data is available.");
+-    lambda := thermalConductivityEstimate(specificHeatCapacityCp(state),
++    lambda := thermalConductivityEstimate(data, specificHeatCapacityCp(state),
+       dynamicViscosity(state), method=method);
+     annotation (smoothOrder=2);
+   end thermalConductivity;
+@@ -780,8 +746,8 @@
+     redeclare record extends ThermodynamicState "thermodynamic state variables"
+     end ThermodynamicState;
+ 
+-  redeclare record extends FluidConstants "fluid constants"
+-  end FluidConstants;
++//   redeclare record extends FluidConstants "fluid constants"
++//   end FluidConstants;
+ 
+   constant Modelica.Media.IdealGases.Common.DataRecord[:] data
+     "Data records of ideal gas substances";
+@@ -1392,7 +1358,7 @@
+                        fluidConstants[i].acentricFactor,
+                        fluidConstants[i].dipoleMoment);
+     cp[i] := SingleGasNasa.cp_T(data[i],state.T);
+-    lambdaX[i] :=SingleGasNasa.thermalConductivityEstimate(Cp=cp[i], eta=
++    lambdaX[i] :=SingleGasNasa.thermalConductivityEstimate(data[i],Cp=cp[i], eta=
+           eta[i], method=method);
+       end for;
+       lambda := lowPressureThermalConductivity(massToMoleFractions(state.X,
+@@ -1559,6 +1525,7 @@
+ end MixtureGasNasa;
+ 
+ 
++
+ annotation (Documentation(info="<html>
+ 
+ </html>"));
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Media/package.mo build/Modelica 3.1/Media/package.mo
+--- svn/MSL 3.1/Modelica/Media/package.mo	2013-10-03 15:46:06.013017140 +0200
++++ build/Modelica 3.1/Media/package.mo	2013-10-03 15:49:03.065763596 +0200
+@@ -2196,8 +2196,8 @@
+ 
+     // Use type declarations from the Medium
+     Medium.MassFlowRate m_flow_ext;
+-    Medium.DynamicViscosity eta=Medium.dynamicViscosity(medium);
+-    Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(medium);
++    Medium.DynamicViscosity eta=Medium.dynamicViscosity(state);
++    Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(state);
+   equation
+     medium.p = 1.0e5;
+     m = medium.d*V;
+@@ -2496,7 +2496,6 @@
+ <p> For details see the documentation of the example package TwoPhaseWater</p>
+ </html>
+ "));
+-
+     end TestTwoPhaseStates;
+     annotation (Documentation(info="<html>
+ <h4>Example: TwoPhaseWater</h4>
+@@ -2508,11 +2507,11 @@
+ with many more properties than the default, the standard BaseProperties
+ is used as a basis. For additional properties, a user has to:<br>
+ <ol>
+-<li>Declare a new variable of the wanted type, e.g. <span
++<li>Declare a new variable of the wanted type, e.g., <span
+ style=\"color: rgb(0, 0, 153);\">\"<span style=\"color: rgb(51, 51, 255);\">DynamicViscosity
+ eta</span>\"</span>.</li>
+ <li>Compute that variable by calling the function form the package,
+-e.g. <span style=\"color: rgb(51, 51, 255);\">eta =
++e.g., <span style=\"color: rgb(51, 51, 255);\">eta =
+ dynamicViscosity(state)</span>. Note that the instance of
+ ThermodynamicState is used as an input to the function. This instance
+ \"state\" is declared in PartialMedium and thus available in every medium
+@@ -2537,18 +2536,18 @@
+ the boundaries. The ususal steps to compute properties on the phase
+ boundary are: <br>
+ <ol>
+-<li>Declare an instance of ThermodynamicState, e.g. \"ThermodynamicState&nbsp; dew\".</li>
++<li>Declare an instance of ThermodynamicState, e.g., \"ThermodynamicState&nbsp; dew\".</li>
+ <li>Compute the state, using an instance of SaturationProperties,
+-e.g. dew = setDewState(sat)</li>
++e.g., dew = setDewState(sat)</li>
+ <li>Compute properties on the phase boundary to your full desire,
+-e.g. \"cp_d = specificHeatCapacityCp(dew)\". <br>
++e.g., \"cp_d = specificHeatCapacityCp(dew)\". <br>
+ </li>
+ </ol>
+ <p>The sample model TestTwoPhaseStates test the extended properties</p>
+ 
+ <p>
+ The same procedure can be used to compute properties at other state
+-points, e.g. when an isentropic reference state is computed.
++points, e.g., when an isentropic reference state is computed.
+ </p>
+ </html>
+ "));
+@@ -2577,7 +2576,7 @@
+       Medium.ThermalConductivity lambda= Medium.thermalConductivity(medium.state);
+       Real beta = Medium.isobaricExpansionCoefficient(medium.state);
+       Real gamma2 = Medium.isothermalCompressibility(medium2.state);
+-      Medium.SpecificEnthalpy h_is = Medium.isentropicEnthalpyApproximation(2.0e5, medium);
++      Medium.SpecificEnthalpy h_is = Medium.isentropicEnthalpyApproximation(2.0e5, medium.state);
+     equation
+       der(medium.p) = 1000.0;
+       der(medium.T) = 1000;
+@@ -2615,7 +2614,7 @@
+       Medium.VelocityOfSound a=Medium.velocityOfSound(state);
+       Real beta = Medium.isobaricExpansionCoefficient(state);
+       Real gamma2 = Medium.isothermalCompressibility(medium2.state);
+-      Medium.SpecificEnthalpy h_is = Medium.isentropicEnthalpyApproximation(2.0e5, medium2);
++      Medium.SpecificEnthalpy h_is = Medium.isentropicEnthalpyApproximation(2.0e5, medium2.state);
+       parameter Medium.MolarMass[4] MMx = Medium.data.MM
+         "Molar masses of flue gas";
+       Medium.MolarMass MM =  1/sum(state.X[j]/MMx[j] for j in 1:4) "molar mass";
+@@ -2667,11 +2666,11 @@
+       Real m(quantity=Medium.mediumName, start = 1.0);
+       SI.InternalEnergy U;
+ 
+-      Medium.SpecificHeatCapacity cp=Medium.specificHeatCapacityCp(medium);
+-      Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(medium);
+-      Medium.IsentropicExponent gamma=Medium.isentropicExponent(medium);
+-      Medium.SpecificEntropy s=Medium.specificEntropy(medium);
+-      Medium.VelocityOfSound a=Medium.velocityOfSound(medium);
++      Medium.SpecificHeatCapacity cp=Medium.specificHeatCapacityCp(medium.state);
++      Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(medium.state);
++      Medium.IsentropicExponent gamma=Medium.isentropicExponent(medium.state);
++      Medium.SpecificEntropy s=Medium.specificEntropy(medium.state);
++      Medium.VelocityOfSound a=Medium.velocityOfSound(medium.state);
+     equation
+ 
+       m = medium.d*V;
+@@ -2693,18 +2692,18 @@
+       model TemplateMedium "Test Interfaces.TemplateMedium"
+         extends Modelica.Icons.Example;
+         package Medium = Interfaces.TemplateMedium "Medium model";
+-        Medium.ThermodynamicState medium;
++        Medium.ThermodynamicState state;
+ 
+-        Medium.DynamicViscosity eta=Medium.dynamicViscosity(medium);
+-        Medium.ThermalConductivity lambda=Medium.thermalConductivity(medium);
+-        Medium.SpecificEntropy s=Medium.specificEntropy(medium);
+-        Medium.SpecificHeatCapacity cp=Medium.specificHeatCapacityCp(medium);
+-        Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(medium);
+-        Medium.IsentropicExponent gamma=Medium.isentropicExponent(medium);
+-        Medium.VelocityOfSound a=Medium.velocityOfSound(medium);
++        Medium.DynamicViscosity eta=Medium.dynamicViscosity(state);
++        Medium.ThermalConductivity lambda=Medium.thermalConductivity(state);
++        Medium.SpecificEntropy s=Medium.specificEntropy(state);
++        Medium.SpecificHeatCapacity cp=Medium.specificHeatCapacityCp(state);
++        Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(state);
++        Medium.IsentropicExponent gamma=Medium.isentropicExponent(state);
++        Medium.VelocityOfSound a=Medium.velocityOfSound(state);
+       equation
+-        medium.p = 1.0e5;
+-        medium.T = 300 + time/1000;
++        state.p = 1.0e5;
++        state.T = 300 + time/1000;
+         annotation (Documentation(info="<html>
+ 
+ </html>"));
+@@ -2734,11 +2733,11 @@
+       Real m(quantity=Medium.mediumName, start = 1.0);
+       SI.InternalEnergy U;
+ 
+-      Medium.SpecificHeatCapacity cp=Medium.specificHeatCapacityCp(medium);
+-      Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(medium);
+-      Medium.IsentropicExponent gamma=Medium.isentropicExponent(medium);
+-      Medium.SpecificEntropy s=Medium.specificEntropy(medium);
+-      Medium.VelocityOfSound a=Medium.velocityOfSound(medium);
++      Medium.SpecificHeatCapacity cp=Medium.specificHeatCapacityCp(medium.state);
++      Medium.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(medium.state);
++      Medium.IsentropicExponent gamma=Medium.isentropicExponent(medium.state);
++      Medium.SpecificEntropy s=Medium.specificEntropy(medium.state);
++      Medium.VelocityOfSound a=Medium.velocityOfSound(medium.state);
+     equation
+ 
+       m = medium.d*V;
+@@ -3631,7 +3630,6 @@
+ </p>
+ 
+ </html>"));
+-
+    end Inverse_sine;
+ 
+    model Inverse_sh_T
+@@ -4107,7 +4105,7 @@
+       parameter Boolean preferredMediumStates=false
+         "= true if StateSelect.prefer shall be used for the independent property variables of the medium"
+         annotation (Evaluate=true, Dialog(tab="Advanced"));
+-      parameter Boolean standardOrderComponents = true
++      replaceable parameter Boolean standardOrderComponents = true
+         "if true, and reducedX = true, the last element of X will be computed from the other ones";
+       SI.Conversions.NonSIunits.Temperature_degC T_degC=
+           Modelica.SIunits.Conversions.to_degC(T)
+@@ -5320,14 +5318,13 @@
+         "Mass fractions (= (component mass)/total mass  m_i/m)";
+     end ThermodynamicState;
+ 
+-    redeclare replaceable record extends FluidConstants
+-      "extended fluid constants"
++    redeclare record extends FluidConstants "extended fluid constants"
+       Temperature criticalTemperature "critical temperature";
+       AbsolutePressure criticalPressure "critical pressure";
+       MolarVolume criticalMolarVolume "critical molar Volume";
+       Real acentricFactor "Pitzer acentric factor";
+-      Temperature triplePointTemperature "triple point temperature";
+-      AbsolutePressure triplePointPressure "triple point pressure";
++    //   Temperature triplePointTemperature "triple point temperature";
++    //   AbsolutePressure triplePointPressure "triple point pressure";
+       Temperature meltingPoint "melting point at 101325 Pa";
+       Temperature normalBoilingPoint "normal boiling point (at 101325 Pa)";
+       DipoleMoment dipoleMoment
+@@ -5775,7 +5772,7 @@
+         extends Modelica.Icons.Function;
+         input AbsolutePressure p "Pressure";
+         input Temperature T "Temperature";
+-        input MassFraction X[nX] "Mass fractions";
++        input MassFraction X[:] "Mass fractions";
+         input FixedPhase phase=0
+         "2 for two-phase, 1 for one-phase, 0 if not known";
+         output SpecificEnthalpy h "Specific enthalpy at p, T, X";
+@@ -5789,7 +5786,7 @@
+         extends Modelica.Icons.Function;
+         input AbsolutePressure p "Pressure";
+         input SpecificEnthalpy h "Specific enthalpy";
+-        input MassFraction X[nX] "Mass fractions";
++        input MassFraction X[:] "Mass fractions";
+         input FixedPhase phase=0
+         "2 for two-phase, 1 for one-phase, 0 if not known";
+         output Temperature T "Temperature";
+@@ -5803,7 +5800,7 @@
+         extends Modelica.Icons.Function;
+         input AbsolutePressure p "Pressure";
+         input SpecificEnthalpy h "Specific enthalpy";
+-        input MassFraction X[nX] "Mass fractions";
++        input MassFraction X[:] "Mass fractions";
+         input FixedPhase phase=0
+         "2 for two-phase, 1 for one-phase, 0 if not known";
+         output Density d "density";
+@@ -5817,7 +5814,7 @@
+         extends Modelica.Icons.Function;
+         input AbsolutePressure p "Pressure";
+         input SpecificEntropy s "Specific entropy";
+-        input MassFraction X[nX] "Mass fractions";
++        input MassFraction X[:] "Mass fractions";
+         input FixedPhase phase=0
+         "2 for two-phase, 1 for one-phase, 0 if not known";
+         output Temperature T "Temperature";
+@@ -5831,7 +5828,7 @@
+         extends Modelica.Icons.Function;
+         input AbsolutePressure p "Pressure";
+         input SpecificEntropy s "Specific entropy";
+-        input MassFraction X[nX] "Mass fractions";
++        input MassFraction X[:] "Mass fractions";
+         input FixedPhase phase=0
+         "2 for two-phase, 1 for one-phase, 0 if not known";
+         output Density d "Density";
+@@ -5845,7 +5842,7 @@
+         extends Modelica.Icons.Function;
+         input AbsolutePressure p "Pressure";
+         input SpecificEntropy s "Specific entropy";
+-        input MassFraction X[nX] "Mass fractions";
++        input MassFraction X[:] "Mass fractions";
+         input FixedPhase phase=0
+         "2 for two-phase, 1 for one-phase, 0 if not known";
+         output SpecificEnthalpy h "specific enthalpy";
+@@ -6601,7 +6598,7 @@
+       extends Modelica.Icons.Function;
+       input AbsolutePressure p "Pressure";
+       input SpecificEnthalpy h "Specific enthalpy";
+-      input MassFraction X[nX] "Mass fractions";
++      input MassFraction X[:] "Mass fractions";
+       output Temperature T "Temperature";
+     algorithm
+       T := h/cp_const + T0;
+@@ -6704,21 +6701,21 @@
+ protected
+   type Rate = Real (final quantity="Rate", final unit="s-1");
+   type MolarFlowRate = Real (final quantity="MolarFlowRate", final unit="mol/s");
+-  type MolarReactionRate = Real (final quantity="MolarReactionRate", final unit
+-        ="mol/(m3.s)");
++  type MolarReactionRate = Real (final quantity="MolarReactionRate", final unit=
++         "mol/(m3.s)");
+   type MolarEnthalpy = Real (final quantity="MolarEnthalpy", final unit="J/mol");
+-  type DerDensityByEntropy = Real (final quantity="DerDensityByEntropy", final unit
+-        =    "kg2.K/(m3.J)");
+-  type DerEnergyByPressure = Real (final quantity="DerEnergyByPressure", final unit
+-        =    "J/Pa");
++  type DerDensityByEntropy = Real (final quantity="DerDensityByEntropy", final unit=
++             "kg2.K/(m3.J)");
++  type DerEnergyByPressure = Real (final quantity="DerEnergyByPressure", final unit=
++             "J/Pa");
+   type DerEnergyByMoles = Real (final quantity="DerEnergyByMoles", final unit=
+           "J/mol");
+   type DerEntropyByTemperature = Real (final quantity="DerEntropyByTemperature",
+          final unit="J/K2");
+   type DerEntropyByPressure = Real (final quantity="DerEntropyByPressure",
+         final unit="J/(K.Pa)");
+-  type DerEntropyByMoles = Real (final quantity="DerEntropyByMoles", final unit
+-        ="J/(mol.K)");
++  type DerEntropyByMoles = Real (final quantity="DerEntropyByMoles", final unit=
++         "J/(mol.K)");
+   type DerPressureByDensity = Real (final quantity="DerPressureByDensity",
+         final unit="Pa.m3/kg");
+   type DerPressureBySpecificVolume = Real (final quantity=
+@@ -6727,8 +6724,8 @@
+           "DerPressureByTemperature", final unit="Pa/K");
+   type DerVolumeByTemperature = Real (final quantity="DerVolumeByTemperature",
+         final unit="m3/K");
+-  type DerVolumeByPressure = Real (final quantity="DerVolumeByPressure", final unit
+-        =    "m3/Pa");
++  type DerVolumeByPressure = Real (final quantity="DerVolumeByPressure", final unit=
++             "m3/Pa");
+   type DerVolumeByMoles = Real (final quantity="DerVolumeByMoles", final unit=
+           "m3/mol");
+   type IsenthalpicExponent = Real (final quantity="IsenthalpicExponent", unit=
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Media/Water/IF97_Utilities.mo build/Modelica 3.1/Media/Water/IF97_Utilities.mo
+--- svn/MSL 3.1/Modelica/Media/Water/IF97_Utilities.mo	2013-10-03 15:46:05.945016852 +0200
++++ build/Modelica 3.1/Media/Water/IF97_Utilities.mo	2013-10-03 15:49:03.061763578 +0200
+@@ -1776,7 +1776,7 @@
+         g.p := p;
+         g.T := T;
+         g.R := data.RH2O;
+-        assert(p > triple.ptriple,
++        assert(p > 0.0,
+           "IF97 medium function g2 called with too low pressure\n" +
+           "p = " + String(p) + " Pa <= " + String(triple.ptriple) + " Pa (triple point pressure)");
+         assert(p <= 100.0e6,
+@@ -2212,7 +2212,7 @@
+       protected
+         Real[11] o "vector of auxiliary variables";
+       algorithm
+-        assert(p > triple.ptriple,
++        assert(p > 0.0,
+           "IF97 medium function g5 called with too low pressure\n" +
+           "p = " + String(p) + " Pa <= " + String(triple.ptriple) + " Pa (triple point pressure)");
+         assert(p <= data.PLIMIT5,
+@@ -4923,7 +4923,7 @@
+           "dimensionless Helmholtz function and dervatives wrt delta and tau";
+         Modelica.Media.Common.NewtonDerivatives_ph nDerivs
+           "derivatives needed in Newton iteration";
+-        Boolean found "flag for iteration success";
++        Boolean found=false "flag for iteration success";
+         Integer subregion "1 for subregion 3a, 2 for subregion 3b";
+       algorithm
+         if p < data.PCRIT then
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Media/Water/package.mo build/Modelica 3.1/Media/Water/package.mo
+--- svn/MSL 3.1/Modelica/Media/Water/package.mo	2013-10-03 15:46:05.949016869 +0200
++++ build/Modelica 3.1/Media/Water/package.mo	2013-10-03 15:49:03.061763578 +0200
+@@ -3,7 +3,7 @@
+ 
+ 
+ extends Modelica.Icons.Library;
+-  constant Interfaces.PartialTwoPhaseMedium.FluidConstants[1] waterConstants(
++  constant Modelica.Media.Interfaces.PartialTwoPhaseMedium.FluidConstants[1] waterConstants(
+      each chemicalFormula = "H2O",
+      each structureFormula="H2O",
+      each casRegistryNumber="7732-18-5",
+@@ -20,7 +20,22 @@
+      each dipoleMoment = 1.8,
+      each hasCriticalData=true);
+ 
+-  constant Interfaces.PartialMedium.FluidConstants[1] simpleWaterConstants(
++  constant Modelica.Media.Interfaces.PartialMixtureMedium.FluidConstants[1] idealWaterConstants(
++     each chemicalFormula = "H2O",
++     each structureFormula="H2O",
++     each casRegistryNumber="7732-18-5",
++     each iupacName="oxidane",
++     each molarMass=0.018015268,
++     each criticalTemperature=647.096,
++     each criticalPressure=22064.0e3,
++     each criticalMolarVolume=1/322.0*0.018015268,
++     each normalBoilingPoint=373.124,
++     each meltingPoint=273.15,
++     each acentricFactor = 0.344,
++     each dipoleMoment = 1.8,
++     each hasCriticalData=true);
++
++  constant Modelica.Media.Interfaces.PartialMedium.FluidConstants[1] simpleWaterConstants(
+      each chemicalFormula = "H2O",
+      each structureFormula="H2O",
+      each casRegistryNumber="7732-18-5",
+@@ -65,7 +80,7 @@
+ 
+ package IdealSteam "Water: Steam as ideal gas from NASA source"
+   extends IdealGases.SingleGases.H2O(
+-  fluidConstants = waterConstants);
++  fluidConstants = idealWaterConstants);
+   annotation (Documentation(info="<html>
+ 
+ </html>"));
+@@ -151,12 +166,11 @@
+     h(stateSelect=if ph_explicit and preferredMediumStates then StateSelect.prefer else StateSelect.default),
+     d(stateSelect=if dT_explicit and preferredMediumStates then StateSelect.prefer else StateSelect.default),
+     T(stateSelect=if (pT_explicit or dT_explicit) and preferredMediumStates then StateSelect.prefer else StateSelect.default),
+-    p(stateSelect=if (pT_explicit or ph_explicit) and preferredMediumStates then StateSelect.prefer else StateSelect.default))
++    p(stateSelect=if (pT_explicit or ph_explicit) and preferredMediumStates then StateSelect.prefer else StateSelect.default),
++    sat(Tsat(start = 300.0), psat(start=1.0e5)))
+     "Base properties of water"
+     Integer phase(min=0, max=2, start=1,fixed=false)
+       "2 for two-phase, 1 for one-phase, 0 if not known";
+-    SaturationProperties sat(Tsat(start=300.0), psat(start=1.0e5))
+-      "saturation temperature and pressure";
+   equation
+     MM = fluidConstants[1].molarMass;
+     if smoothModel then
+diff -u -x .svn -r svn/MSL 3.1/Modelica/Media/Water/package.order build/Modelica 3.1/Media/Water/package.order
+--- svn/MSL 3.1/Modelica/Media/Water/package.order	2013-10-03 15:46:05.949016869 +0200
++++ build/Modelica 3.1/Media/Water/package.order	2013-10-03 15:49:03.061763578 +0200
+@@ -1,4 +1,5 @@
+ waterConstants
++idealWaterConstants
+ simpleWaterConstants
+ ConstantPropertyLiquidWater
+ IdealSteam
