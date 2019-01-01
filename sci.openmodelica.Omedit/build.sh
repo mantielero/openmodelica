@@ -1,1 +1,1 @@
-flatpak-builder --force-clean --install build_dir/ sci.openmodelica.Omedit.json
+flatpak-builder --force-clean --install app sci.openmodelica.Omedit.json
