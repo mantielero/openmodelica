@@ -17,8 +17,8 @@ To build it and install it:
 flatpak-builder --install app sci.openmodelica.Omedit.json
 ```
 
-TODO: right now Omedit won't compile. The reason is that it depends on a huge file which contains the libraries and that I cannot upload to github. The solution is to create small packages per library.
 
+TODO:
 
-
-
+- [ ] To include more icons.
+- [ ] To include it in fluthub.
