@@ -1,0 +1,15 @@
+{
+   "name": "lz4",
+   "buildsystem" : "simple",
+   "build-commands": [
+      "make",
+      "make PREFIX=/app install"
+   ],
+   "sources": [
+      {
+         "type": "git",
+         "url": "https://github.com/lz4/lz4",
+         "tag": "v1.8.2"
+      }
+   ]
+}
