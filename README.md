@@ -21,4 +21,4 @@ flatpak-builder --install app sci.openmodelica.Omedit.json
 TODO:
 
 - [ ] To include more icons.
-- [ ] To include it in fluthub.
+- [ ] To include it in flathub.
