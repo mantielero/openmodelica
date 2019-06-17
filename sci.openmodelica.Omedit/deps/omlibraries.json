@@ -15,16 +15,17 @@
    "sources": [
       {
       "type": "git",
-      "url": "https://github.com/OpenModelica/OMLibraries",
-      "commit": "eff6efaa31937b27912edebbf608a4a34b50d8c2"
+      "url": "https://github.com/OpenModelica/OMLibraries"
+      /*"commit": "698e80dfb215496321f3090c2a95a6e695ed592a"*/
+      /*"commit": "eff6efaa31937b27912edebbf608a4a34b50d8c2"*/
       /* "tag": "v1.9.2" */
-      },
-
+      }
+/*
       {
          "type": "patch",
          "path": "Makefile.libs.patch",
          "strip-components" : 0
-      }
+      }*/
    ]
 
 }
