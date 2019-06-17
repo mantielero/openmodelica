@@ -1,0 +1,5 @@
+./sci.openmodelica.BaseApp/app
+./sci.openmodelica.BaseApp/.flatpak-builder
+./sci.openmodelica.Omedit/app
+./sci.openmodelica.Omedit/.flatpak-builder
+*.json~
