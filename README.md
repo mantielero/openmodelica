@@ -20,6 +20,9 @@ To build it and install it:
 ```bash
 flatpak-builder --install app sci.openmodelica.BaseApp.json
 ```
+> For a "per user" installation:
+>
+>     flatpak-builder --install --user --force-clean app sci.openmodelica.BaseApp.json
 
 ## Omedit
 It contains everything needed to run OMEdit. It depends on BaseApp.
