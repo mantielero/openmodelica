@@ -1,6 +1,6 @@
-app-id: sci.openmodelica.Omedit
+app-id: org.openmodelica.OMEdit
 # runtime: org.kde.Platform
-base: sci.openmodelica.BaseApp
+base: org.openmodelica.BaseApp
 base-version: master
 runtime: org.kde.Sdk
 runtime-version: "5.11"
