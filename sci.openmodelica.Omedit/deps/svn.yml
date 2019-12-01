@@ -1,0 +1,10 @@
+name: svn
+buildsystem: autotools
+config-opts:
+- --prefix=/app
+- --with-serf
+sources:
+- type: archive
+  url: http://ftp.cixug.es/apache/subversion/subversion-1.13.0.tar.gz
+  sha256: daad440c03b8a86fcca804ea82217bb1902cfcae1b7d28c624143c58dcb96931
+
