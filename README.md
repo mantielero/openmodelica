@@ -57,8 +57,12 @@ This will create the following couple of files:
 
 Installing from these files doesn't require to compile.
 
-### Installing from bundle files (TODO)
-TODO
+### Installing from bundle files (To be checked)
+If you have the bundle files, you can install from them by just doing:
+```bash
+$ flatpak install --user BaseApp.flatpak
+$ flatpak install --user OMEdit.flatpak
+```
 
 ## TODO
 
