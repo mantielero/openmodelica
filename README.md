@@ -50,10 +50,10 @@ and:
 $ flatpak build-bundle ~/.local/share/flatpak/repo OMEdit.flatpak org.openmodelica.OMEdit
 ```
 
-This will create the following couple of files:
+This will create the following couple of files. I have created the two following files (no warranty about them; I am also a newbie):
 
- - BaseApp.flatpak: 33Mb
- - OMEdit.flatpak: 452Mb
+ - [BaseApp.flatpak](https://mega.nz/#!ENE1XaBD!xRrBsMxsm8011ISZ5iZzi7LhIPgwYnDwmavnPSYI9-g): 33Mb
+ - [OMEdit.flatpak](https://mega.nz/#!cMdx2YZY!Raw4KsWpt3QWu-GELm9S6j6BfkmFb8Fu8sBSkhSEYj8): 452Mb
 
 Installing from these files doesn't require to compile.
 
