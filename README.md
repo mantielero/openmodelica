@@ -40,6 +40,25 @@ To build it and install it for all the users:
 ```bash
 $ sudo flatpak-builder --install app sci.openmodelica.Omedit.yml
 ```
+## Bundles
+It is possible to store both packages in single files once compiled. If we have installed both packages for the current user, we can do:
+```bash
+$ flatpak build-bundle ~/.local/share/flatpak/repo BaseApp.flatpak org.openmodelica.BaseApp
+```
+and:
+```bash
+$ flatpak build-bundle ~/.local/share/flatpak/repo OMEdit.flatpak org.openmodelica.OMEdit
+```
+
+This will create the following couple of files:
+
+ - BaseApp.flatpak: 33Mb
+ - OMEdit.flatpak: 452Mb
+
+Installing from these files doesn't require to compile.
+
+### Installing from bundle files (TODO)
+TODO
 
 ## TODO
 
