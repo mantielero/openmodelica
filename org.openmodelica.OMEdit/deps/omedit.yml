@@ -31,21 +31,21 @@ sources:
   tag: v1.12.0
 
 - type: file
-  path: sci.openmodelica.OMEdit.desktop
+  path: org.openmodelica.OMEdit.desktop
 
 - type: file
-  path: sci.openmodelica.OMEdit.256.png
+  path: org.openmodelica.OMEdit.256.png
 
 - type: file
-  path: sci.openmodelica.OMEdit.128.png
+  path: org.openmodelica.OMEdit.128.png
 
 - type: file
-  path: sci.openmodelica.OMEdit.64.png
+  path: org.openmodelica.OMEdit.64.png
   
 post-install:
-- install -Dm644 sci.openmodelica.OMEdit.desktop /app/share/applications/sci.openmodelica.OMEdit.desktop
-- install -Dm644 sci.openmodelica.OMEdit.256.png /app/share/icons/hicolor/256x256/apps/sci.openmodelica.OMEdit.png
-- install -Dm644 sci.openmodelica.OMEdit.128.png /app/share/icons/hicolor/128x128/apps/sci.openmodelica.OMEdit.png
-- install -Dm644 sci.openmodelica.OMEdit.64.png /app/share/icons/hicolor/64x64/apps/sci.openmodelica.OMEdit.png
+- install -Dm644 org.openmodelica.OMEdit.desktop /app/share/applications/org.openmodelica.OMEdit.desktop
+- install -Dm644 org.openmodelica.OMEdit.256.png /app/share/icons/hicolor/256x256/apps/org.openmodelica.OMEdit.png
+- install -Dm644 org.openmodelica.OMEdit.128.png /app/share/icons/hicolor/128x128/apps/org.openmodelica.OMEdit.png
+- install -Dm644 org.openmodelica.OMEdit.64.png /app/share/icons/hicolor/64x64/apps/org.openmodelica.OMEdit.png
    
 

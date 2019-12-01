@@ -32,6 +32,6 @@ build-commands:
 
 sources:
 - type: git
-  #tag: v2.0.1
   url: https://github.com/OpenModelica/OMSimulator.git
+  tag: v2.0.1
 
